@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { AuthModule } from './auth';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,10 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AuthModule.forRoot({
+      apiUrl: 'http://localhost:3000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
