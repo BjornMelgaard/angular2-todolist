@@ -21,11 +21,6 @@ describe('AuthService', () => {
       c.mockRespond(new Response(new ResponseOptions(respond)));
     });
   }
-  const signUpParams = {
-    email: 'example@mail.com',
-    password: '123qwe',
-    password_confirmaition: '123qwe',
-  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -61,7 +56,7 @@ describe('AuthService', () => {
               email: 'example@mail.com',
               token: 'example_token' } },
           status: 200 });
-        auth.signUp(signUpParams).subscribe((resp) => {
+        auth.signUp('example@mail.com', '123qwe', '123qwe').subscribe((resp) => {
           expect(auth.isAuthorized()).toBeTruthy();
           expect(api.headers.get('X-USER-TOKEN')).toEqual('example_token')
         });
@@ -73,10 +68,10 @@ describe('AuthService', () => {
         mockRespond({
           body: { user: { token: 'example_token' } },
           status: 200 });
-
         expect(() => {
-          auth.signUp(signUpParams).subscribe((resp) => {});
+          auth.signUp('example@mail.com', '123qwe', '123qwe').subscribe((resp) => {});
         }).toThrowError();
+        console.log(localStorage);
 
         expect(auth.isAuthorized()).toBeFalsy();
       }));

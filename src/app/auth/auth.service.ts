@@ -2,22 +2,36 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from './api';
 import { AuthConfig } from './config';
-import { CanActivate, Router } from '@angular/router';
-import 'rxjs/Rx';
+import { Response } from '@angular/http';
 
 @Injectable()
-export class AuthService implements CanActivate{
-  EMAIL_KEY: string = 'email';
+export class AuthService {
+  constructor(private api: ApiService, private config: AuthConfig) {
+    let email = localStorage.getItem(this.config.emailName);
+    let token = localStorage.getItem(this.config.tokenName);
+    if (email && token) {
+      this.setUser(email, token);
+    }
+  }
 
-  constructor(private api: ApiService, private router: Router, private config: AuthConfig) { }
+  private setUser(email: string, token: string) {
+    localStorage.setItem(this.config.emailName, email);
+    localStorage.setItem(this.config.tokenName, token);
+    let headers = {};
+    headers[this.config.emailName] = email;
+    headers[this.config.tokenName] = token;
+    this.api.setHeaders(headers);
+  }
 
-  private setUser(response) {
-    if(response.user && response.user.token && response.user.email){
-      localStorage.setItem(this.EMAIL_KEY, response.user.email);
-      let headers = {};
-      headers[this.config.tokenName] = response.user.token;
-      headers[this.config.emailName] = response.user.email;
-      this.api.setHeaders(headers);
+  private removeUser() {
+    localStorage.removeItem(this.config.emailName);
+    localStorage.removeItem(this.config.tokenName);
+    this.api.resetHeaders();
+  }
+
+  private saveAuthorization(response) {
+    if (response.user && response.user.email && response.user.token){
+      this.setUser(response.user.email, response.user.token)
     } else {
       let error = new Error('Wrong user credentials');
       error['response'] = response;
@@ -25,42 +39,34 @@ export class AuthService implements CanActivate{
     }
   }
 
-  private removeUser() {
-    localStorage.removeItem(this.EMAIL_KEY);
-    this.api.resetHeaders();
-  }
-
   isAuthorized(): boolean {
     return this.getUserEmail() !== null;
   }
 
   getUserEmail() {
-    return localStorage.getItem(this.EMAIL_KEY);
+    return localStorage.getItem(this.config.emailName);
   }
 
-  canActivate(): boolean {
-    const isAuth = this.isAuthorized();
-    if (!isAuth) {
-      this.router.navigate(['', 'auth']);
-    }
-    return isAuth;
-  }
-
-  signUp(creds): Observable<any> {
+  signUp(email, password, password_confirmation): Observable<any> {
+    let creds = {user: {
+      email: email,
+      password: password,
+      password_confirmation: password_confirmation}}
     return this.api.post(this.config.signUpPath, creds)
-      .do((resp) => this.setUser(resp) );
+      .do((resp) => this.saveAuthorization(resp) );
   }
 
-  signIn(creds): Observable<any> {
+  signIn(email, password): Observable<any> {
+    let creds = {user: {
+      email: email,
+      password: password}}
     return this.api.post(this.config.signInPath, creds)
-      .do((resp) => this.setUser(resp));
+      .do((resp) => this.saveAuthorization(resp) );
   }
 
   signOut() {
-    this.api.delete(this.config.signOutPath)
+    return this.api.delete(this.config.signOutPath)
       .do(() => this.removeUser() )
-      .do(() => this.router.navigate(['', 'auth']) );
   }
-
 
 }
