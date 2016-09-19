@@ -3,12 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { ProjectsComponent } from './projects.component';
-import { ProjectService, ProjectHeaderEditedService } from './shared';
-import { ProjectHeaderComponent, Autofocus } from './ui';
+import { ProjectService } from './shared';
+import { AutofocusDirective } from './ui';
 
 @NgModule({
   imports: [BrowserModule, FormsModule],
-  declarations: [ProjectsComponent, ProjectHeaderComponent],
-  providers: [ProjectService, ProjectHeaderEditedService]
+  declarations: [ProjectsComponent, AutofocusDirective],
+  providers: [ProjectService]
 })
 export class ProjectsModule { }

@@ -1,12 +1,13 @@
-import {Directive, ElementRef, Renderer} from '@angular/core';
+import {Directive, ElementRef, Renderer, OnInit} from '@angular/core';
 
-// Simple example directive that fixes autofocus problem with multiple views
 @Directive({
-  selector: '[autofocus]' // using [ ] means selecting attributes
+  selector: '[autofocus]'
 })
-export class Autofocus {
-  constructor(el: ElementRef, renderer: Renderer) {
-    // autofocus fix for multiple views
-    renderer.invokeElementMethod(el, 'focus', []);
+export class AutofocusDirective implements OnInit {
+  constructor(private el: ElementRef) {
+  }
+
+  ngOnInit(){
+    setTimeout(()=>this.el.nativeElement.focus(), 0);
   }
 }

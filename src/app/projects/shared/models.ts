@@ -1,14 +1,20 @@
-export class Project {
+class Base {
+  editing: boolean;
+  errors: Array<string>;
+}
+
+export class Project extends Base {
   id: number;
   name: string;
   tasks: Array<Task>;
 
   constructor(obj?: any) {
+    super();
     Object.assign(this, obj);
   }
 }
 
-export class Task {
+export class Task extends Base {
   id: number;
   name: string;
   done: boolean;
@@ -17,8 +23,8 @@ export class Task {
   comments: Array<Comments>;
 
   constructor(obj: any) {
+    super();
     Object.assign(this, obj);
-    console.log("Task", this);
   }
 }
 
@@ -29,7 +35,6 @@ export class Comments {
 
   constructor(obj: any) {
     Object.assign(this, obj);
-    console.log("Comments", this);
   }
 }
 

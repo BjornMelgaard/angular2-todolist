@@ -1,14 +1,35 @@
 <div class="projects">
     <div class="project" *ngFor="let project of projects">
-        <project-header [project]="project" (update)="onUpdate(project)" (delete)="onDelete(project)"></project-header>
+      <div class="project-header"
+        (mouseover)='project.hovered=true'
+        (mouseleave)='project.hovered=false'>
+
+        <div class="project-field">
+          <h2 *ngIf="!project.editing">{{project.name}}</h2>
+          <input type="text"
+            autofocus
+            *ngIf="project.editing"
+            [(ngModel)]="project.name"
+            (keyup.enter)="save(project)"
+            (blur)="save(project)"
+            (keyup.escape)="cancel(project)">
+        </div>
+
+        <div class="control" [hidden]="!project.hovered && !project.editing">
+          <ul>
+            <li><a class="edit" (click)="edit(project)"></a ></li>
+            <li><a class="delete" (click)="delete(project)"></a ></li>
+          </ul>
+        </div>
+
+      </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12 footer">
-        <a class="btn btn-lg btn-primary" [class.disabled]="editing" (click)="onCreate()">
+        <a class="btn btn-lg btn-primary" [class.disabled]="editing" (click)="create()">
             <span class="glyphicon glyphicon-plus"></span>Add TODO List
         </a>
     </div>
 </div>
-<code>{{editing}}</code>
 <code>{{projects | json}}</code>
