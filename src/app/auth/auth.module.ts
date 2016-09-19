@@ -6,11 +6,11 @@ import { HttpModule } from '@angular/http';
 import { AuthConfig } from './config';
 import { ApiService } from './api';
 import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
+import { NotSingedInGuard, SingedInGuard } from './auth.guards';
 
 @NgModule({
   imports: [HttpModule],
-  providers: [ApiService, AuthService, AuthGuard]
+  providers: [ApiService, AuthService, NotSingedInGuard, SingedInGuard]
 })
 export class AuthModule {
   constructor( @Optional() @SkipSelf() parentModule: AuthModule) {

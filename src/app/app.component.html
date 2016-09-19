@@ -1,6 +1,11 @@
-<h1 class="text-center">
-  {{title}}
-</h1>
 <div class="container">
-  <router-outlet></router-outlet>
+  <div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+      <a class="btn btn-primary btn-xs pull-right" *ngIf="isAuthenticated" (click)="signOut()">Log Out</a>
+      <div class="logo">Simple TODO List
+        <div class="small">from Ruby Garage</div>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

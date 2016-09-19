@@ -55,6 +55,17 @@ export class ApiService {
     .map(this.getJson);
   }
 
+  put(path: string, body): Observable<any> {
+    return this.http.put(
+      `${this.api_url}${path}`,
+      JSON.stringify(body),
+      { headers: this.headers }
+    )
+    .map(this.checkForError)
+    .catch(err => Observable.throw(err))
+    .map(this.getJson);
+  }
+
   delete(path): Observable<any> {
     return this.http.delete(
       `${this.api_url}${path}`,

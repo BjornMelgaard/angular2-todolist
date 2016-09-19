@@ -74,17 +74,9 @@ export class AuthModalComponent implements AfterViewInit {
   }
 
   facebook(): void {
-    // # TODO
+    this.auth.facebook();
   }
 
-  // signOut(): void {
-  //   this.auth.signOut().subscribe(
-  //     resp => {
-  //       console.log(resp);
-  //     },
-  //     error => this.handleError(error)
-  //   );
-  // }
 
 
 }

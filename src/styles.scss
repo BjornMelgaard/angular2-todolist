@@ -2,5 +2,34 @@
 
 body {
   padding: 20px 0 0;
-  background: #ba680e url('images/bg-body.png') repeat-x 0 0;
+  background: #ba680e url('assets/bg-body.png') repeat-x 0 0;
+}
+
+.control {
+  overflow: hidden;
+  display: none;
+
+
+  ul {
+    margin: 0 0 0 -12px;
+    padding: 0;
+    word-spacing: -.3em;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 0 0 6px;
+    padding: 0 0 0 6px;
+    vertical-align: text-bottom;
+    word-spacing: normal;
+    border-left: 1px solid #ddd;
+  }
+
+  a {
+    display: block;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    cursor: pointer;
+  }
 }

@@ -50,6 +50,11 @@ describe('AuthService', () => {
   describe('.singUp', ()=>{
     describe('with correct response', ()=>{
       it('should save user', async( () =>{
+        auth.authenticated$.subscribe(data=>{
+          console.log(data);
+          expect(data).toEqual(false)
+        }).unsubscribe();
+
         mockRespond({
           body: {
             user: {
@@ -59,19 +64,33 @@ describe('AuthService', () => {
         auth.signUp('example@mail.com', '123qwe', '123qwe').subscribe((resp) => {
           expect(auth.isAuthorized()).toBeTruthy();
           expect(api.headers.get('X-USER-TOKEN')).toEqual('example_token')
+          auth.authenticated$.subscribe(data=>{
+          console.log(data);
+          expect(data).toEqual(true)
+        }).unsubscribe();
+
         });
       }));
     })
 
     describe('with incorrect response', ()=>{
       it('should not save user', async( () =>{
+        auth.authenticated$.subscribe(data=>{
+          console.log(data);
+          expect(data).toEqual(false)
+        }).unsubscribe();
+
         mockRespond({
           body: { user: { token: 'example_token' } },
           status: 200 });
         expect(() => {
           auth.signUp('example@mail.com', '123qwe', '123qwe').subscribe((resp) => {});
         }).toThrowError();
-        console.log(localStorage);
+        expect(localStorage.length).toEqual(0);
+        auth.authenticated$.subscribe(data=>{
+          console.log(data);
+          expect(data).toEqual(false)
+        }).unsubscribe();
 
         expect(auth.isAuthorized()).toBeFalsy();
       }));

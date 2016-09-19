@@ -6,13 +6,12 @@ import { RouterOutletMap } from '@angular/router';
 import { ModuleWithProviders }   from '@angular/core';
 import { RouterModule }  from '@angular/router';
 
-import { DatepickerModule, ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
-
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth';
-import { AuthModalComponent } from './auth-modal/auth-modal.component';
+import { AuthModalModule } from './auth-modal';
 import { ProjectsComponent } from './projects/projects.component';
 import { ROUTES }  from './app.routing';
+import { ProjectsModule } from './projects';
 
 @NgModule({
   imports: [
@@ -21,21 +20,17 @@ import { ROUTES }  from './app.routing';
     HttpModule,
 
     AuthModule.forRoot({
-      apiUrl:      'http://localhost:3000',
-      signUpPath:  '/auth/register',
-      signInPath:  '/auth/login',
-      signOutPath: '/auth/logout'
+      apiUrl:      'http://localhost:3000/api',
+      signUpPath:  '/users/register',
+      signInPath:  '/users/login',
+      signOutPath: '/users/logout',
+      facebookPath: '/users/auth/facebook'
     }),
     RouterModule.forRoot(ROUTES),
-
-    // DatepickerModule,
-    ModalModule
+    AuthModalModule,
+    ProjectsModule
   ],
-  declarations: [
-    AppComponent,
-    AuthModalComponent,
-    ProjectsComponent
-  ],
+  declarations: [ AppComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

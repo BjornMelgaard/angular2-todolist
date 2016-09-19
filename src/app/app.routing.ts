@@ -1,9 +1,9 @@
 import { ModuleWithProviders }   from '@angular/core';
 import { Routes, RouterModule }  from '@angular/router';
 
-import { ProjectsComponent }  from './projects/projects.component';
-import { AuthModalComponent }  from './auth-modal/auth-modal.component';
-import { AuthGuard }  from './auth';
+import { ProjectsComponent }  from './projects';
+import { AuthModalComponent }  from './auth-modal';
+import { SingedInGuard, NotSingedInGuard }  from './auth';
 
 export const ROUTES: Routes = [
   {
@@ -14,11 +14,12 @@ export const ROUTES: Routes = [
   {
     path: 'projects',
     component: ProjectsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [SingedInGuard]
   },
   {
     path: 'auth',
-    component: AuthModalComponent
+    component: AuthModalComponent,
+    canActivate: [NotSingedInGuard]
   },
   {
     path: '**', redirectTo: ''

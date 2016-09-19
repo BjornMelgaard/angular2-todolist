@@ -14,6 +14,8 @@ export class AuthConfig {
   public signUpPath: string;
   public signInPath: string;
   public signOutPath: string;
+  public facebookPath: string;
+  public omniauthWindowType: string;
 
   public tokenName: string;
   public emailName: string;
@@ -25,6 +27,7 @@ export class AuthConfig {
     this.signUpPath = config.signUpPath || '/user';
     this.signInPath = config.signInPath || '/user/sign_in';
     this.signOutPath = config.signOutPath || '/user/sign_out';
+    this.facebookPath = config.facebookPath || '/users/auth/facebook';
 
     this.tokenName = config.tokenName || 'X-USER-TOKEN';
     this.emailName = config.emailName || 'X-USER-EMAIL';
