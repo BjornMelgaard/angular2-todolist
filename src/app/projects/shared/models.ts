@@ -22,7 +22,9 @@ export class Task extends Base {
   position: number;
   comments: Array<Comments>;
 
-  constructor(obj: any) {
+  active: boolean;
+
+  constructor(obj?: any) {
     super();
     Object.assign(this, obj);
   }
@@ -33,7 +35,7 @@ export class Comments {
   name: string;
   // attachments: Array<Attachments>;
 
-  constructor(obj: any) {
+  constructor(obj?: any) {
     Object.assign(this, obj);
   }
 }

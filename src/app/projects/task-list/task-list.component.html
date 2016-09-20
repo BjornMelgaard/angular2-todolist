@@ -1,0 +1,63 @@
+<div class="create-task-header" *ngIf="project.id">
+  <div class="form-inline">
+    <div class="input-group create-task-in">
+      <input type="text" class="form-control" [(ngModel)]="task_name" (keyup.enter)="add()">
+      <span class="input-group-btn">
+        <button class="btn btn-success add-task" [disabled]="!task_name" (click)="add()">Add task</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="task-list" *ngIf="project.tasks">
+  <table class="tasks">
+    <tbody>
+      <tr class="task-item" *ngFor="let task of project.tasks" [class.active]="task.active">
+        <td class="task-status">
+          <input type="checkbox" name="status" [ngModel]="task.done" (change)="setDone(task)">
+        </td>
+
+        <td class="task-name">
+          <div class="left-border">
+            <div class="task-name-text"
+              *ngIf="!task.editing"
+              [class.task-done]="task.done"
+              (click)="onNameClick(task)">
+              <span *ngIf="task.deadline" class="label label-danger deadline">{{ task.deadline | date:'MMM d, y h:mm a' }}</span>
+              {{task.name}}
+            </div>
+            <textarea class="task-name-field" name='name' rows="1"
+              autosize
+              *ngIf='task.editing'
+              [(ngModel)]='task.name'
+              (keyup.enter)='save(task)'
+              (keyup.escape)='cancel(task)'
+              (blur)='save(task)'></textarea>
+            <div class="task-body" *ngIf="task.editing">
+              <div dropdown (onToggle)="toggled($event)">
+                <a dropdownToggle>
+                  Click me for a dropdown, yo!
+                </a>
+                <div class="dropdown-menu" dropdownMenu aria-labelledby="simple-dropdown">
+                  <datepicker [(ngModel)]="dt" [showWeeks]="true"></datepicker>
+                </div>
+              </div>
+               <!-- <comment-list comments="comments"></comment-list> -->
+            </div>
+          </div>
+        </td>
+
+        <td class="task-control">
+          <div class="control">
+            <ul>
+              <li><a class="sort"></a></li>
+              <li><a class="edit"   (click)="edit(task)"></a></li>
+              <li><a class="delete" (click)="delete(task)"></a></li>
+            </ul>
+          </div>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
