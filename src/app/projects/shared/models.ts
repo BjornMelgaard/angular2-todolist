@@ -20,9 +20,9 @@ export class Task extends Base {
   done: boolean;
   deadline: Date;
   position: number;
-  comments: Array<Comments>;
+  comments: Array<Comment>;
 
-  active: boolean;
+  active: boolean = false;
 
   constructor(obj?: any) {
     super();
@@ -30,22 +30,21 @@ export class Task extends Base {
   }
 }
 
-export class Comments {
+export class Comment {
   id: number;
   name: string;
-  // attachments: Array<Attachments>;
+  attachments: Array<Attachment>;
 
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
 }
 
-// export class Attachments {
-//   id: number;
-//   text: string;
+export class Attachment {
+  id: number;
+  file: {url: string, name: string, size: string};
 
-//   constructor(obj: any) {
-//     this.id        = obj && obj.id         || null;
-//     this.text      = obj && obj.text       || '';
-//   }
-// }
+  constructor(obj?: any) {
+    Object.assign(this, obj);
+  }
+}

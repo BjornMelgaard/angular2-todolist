@@ -4,7 +4,7 @@ import { ElementRef, HostListener, Directive, OnInit} from '@angular/core';
     selector: 'textarea[autosize]'
 })
 
-export class Autosize implements OnInit {
+export class AutosizeDirective implements OnInit {
  @HostListener('input',['$event.target'])
   onInput(textArea: HTMLTextAreaElement): void {
     this.adjust();
@@ -12,11 +12,11 @@ export class Autosize implements OnInit {
   constructor(public element: ElementRef){
   }
   ngOnInit(): void{
-    this.element.nativeElement.style.overflow = 'hidden';
-    this.element.nativeElement.style.height = 'auto';
-    this.adjust();
+    setTimeout(()=>this.adjust(), 0);
   }
   adjust(): void{
+    this.element.nativeElement.style.overflow = 'hidden';
+    this.element.nativeElement.style.height = 'auto';
     this.element.nativeElement.style.height = this.element.nativeElement.scrollHeight + "px";
   }
 }

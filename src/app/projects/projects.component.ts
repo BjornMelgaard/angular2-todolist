@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import { ProjectService, Project, Task, Comments } from './shared';
+import { ProjectService, Project } from './shared';
 
 @Component({
   selector: 'app-projects',

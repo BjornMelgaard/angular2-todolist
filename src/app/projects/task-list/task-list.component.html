@@ -12,9 +12,11 @@
 <div class="task-list" *ngIf="project.tasks">
   <table class="tasks">
     <tbody>
-      <tr class="task-item" *ngFor="let task of project.tasks" [class.active]="task.active">
+      <tr class="task-item"
+        *ngFor="let task of project.tasks"
+        [class.active]="task.active">
         <td class="task-status">
-          <input type="checkbox" name="status" [ngModel]="task.done" (change)="setDone(task)">
+          <input type="checkbox" name="status" [checked]="task.done" (change)="setDone(task, $event.target.checked)">
         </td>
 
         <td class="task-name">
@@ -28,21 +30,31 @@
             </div>
             <textarea class="task-name-field" name='name' rows="1"
               autosize
+              autofocus
               *ngIf='task.editing'
               [(ngModel)]='task.name'
-              (keyup.enter)='save(task)'
+              (keydown.enter)='save(task)'
               (keyup.escape)='cancel(task)'
-              (blur)='save(task)'></textarea>
-            <div class="task-body" *ngIf="task.editing">
-              <div dropdown (onToggle)="toggled($event)">
-                <a dropdownToggle>
-                  Click me for a dropdown, yo!
-                </a>
-                <div class="dropdown-menu" dropdownMenu aria-labelledby="simple-dropdown">
-                  <datepicker [(ngModel)]="dt" [showWeeks]="true"></datepicker>
+              (blur)='save(task)'
+              ></textarea>
+            <div class="task-body" *ngIf="task.active">
+
+              <div dropdown class="deadline-dropdown">
+                <button dropdownToggle class="btn btn-default btn-xs dropdown-toggle">
+                  <span class="glyphicon glyphicon-time"></span>
+                  <span *ngIf="!task.deadline">Set deadline</span>
+                  <span *ngIf="task.deadline">Change deadline</span>
+                </button>
+                <span *ngIf="task.deadline">or
+                  <button class="btn btn-default btn-xs" type='button' (click)="setDeadline(task, null)"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
+                </span>
+                <div dropdownMenu class="dropdown-menu " aria-labelledby="deadline-dropdown">
+                  <datepicker ngModel (selectionDone)="setDeadline(task, $event)"></datepicker>
                 </div>
               </div>
-               <!-- <comment-list comments="comments"></comment-list> -->
+
+              <comment-list [task]="task"></comment-list>
+
             </div>
           </div>
         </td>

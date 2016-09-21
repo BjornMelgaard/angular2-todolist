@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Project, Task, Comments } from './models';
+import { Project } from './models';
 import { ApiService } from '../../auth';
 
 @Injectable()
@@ -32,7 +32,6 @@ export class ProjectService {
   }
 
   delete(project: Project) {
-    return this._api
-      .delete('/projects/' + project.id);
+    return this._api.delete('/projects/' + project.id);
   }
 }

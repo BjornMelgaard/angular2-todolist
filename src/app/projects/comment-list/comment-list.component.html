@@ -1,0 +1,34 @@
+<div class="comment-controller">
+  <div class="comments-list" *ngIf="task.comments">
+    <div class="comment" *ngFor="let comment of task.comments">
+
+      <a class="comment-delete" (click)="delete(comment)"><span class="glyphicon glyphicon-remove"></span></a>
+      {{comment.text}}
+      <ul class="attachments" *ngIf="comment.attachments">
+        <li *ngFor="let attachment of comment.attachments">
+          <span class="glyphicon glyphicon-file"></span>
+          <a href="{{attachment.file.url}}" target="_blank">{{attachment.file.name}}</a>
+          ({{attachment.file.size | bytes}})
+        </li>
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="form-group">
+    <textarea name="comment" rows="3" class="form-control" [(ngModel)]="comment_text" placeholder="Start typing here to write comment..."></textarea>
+  </div>
+
+  <input type="file" ng2FileSelect [uploader]="uploader" multiple class="btn btn-primary btn-sm">Attach file</input>
+  <button class="btn btn-success btn-sm pull-right" (click)="add()">Submit comment</button>
+
+  <ul class="attachments">
+    <li *ngFor="let attachment of attachments">
+      <span class="glyphicon glyphicon-file"></span>
+      <a href="{{attachment.file.url}}" target='_blank'>{{attachment.file.name}}</a>
+      ({{attachment.file.size | bytes}})
+      <a (click)="removeAttachment(attachment)">remove</a>
+    </li>
+  </ul>
+
+</div>

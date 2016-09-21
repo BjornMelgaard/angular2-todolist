@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Project, Task, Comments } from './models';
+import { Project, Task, Comment } from './models';
 import { ApiService } from '../../auth';
 
 @Injectable()
@@ -8,9 +8,9 @@ export class TaskService {
   constructor(private _api: ApiService) {
   }
 
-  create(task_name:string, owner_id: number) {
+  create(task_name:string, owner: Project) {
     return this._api
-      .post('/tasks', {name: task_name, project_id: owner_id})
+      .post('/tasks', {name: task_name, project_id: owner.id})
       .map(r => new Task(r));
   }
 
@@ -21,26 +21,23 @@ export class TaskService {
   }
 
   delete(task: Task) {
+    return this._api.delete('/tasks/' + task.id); }
+
+  done(task: Task, done: boolean) {
     return this._api
-      .delete('/tasks/' + task.id)
+      .put(`/tasks/${task.id}/done`, {done: done})
       .map(r => new Task(r));
   }
 
-  done(task: Task) {
+  sort(task: Task, position: number) {
     return this._api
-      .put(`/tasks/${task.id}/done`, task)
+      .put(`/tasks/${task.id}/sort`, {position: position})
       .map(r => new Task(r));
   }
 
-  sort(task: Task) {
+  deadline(task: Task, date: Date) {
     return this._api
-      .put(`/tasks/${task.id}/sort`, task)
-      .map(r => new Task(r));
-  }
-
-  deadline(task: Task) {
-    return this._api
-      .put(`/tasks/${task.id}/deadline`, task)
+      .put(`/tasks/${task.id}/deadline`, {deadline: date})
       .map(r => new Task(r));
   }
 }

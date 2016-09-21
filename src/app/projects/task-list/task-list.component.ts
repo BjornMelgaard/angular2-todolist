@@ -3,7 +3,7 @@ import { TaskService, Project, Task } from '../shared';
 import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
 
-let someTaskActive: EventEmitter<any> = new EventEmitter();
+let taskActive = new EventEmitter<number>();
 
 @Component({
   selector: 'task-list',
@@ -14,17 +14,16 @@ export class TaskListComponent implements OnInit, OnDestroy {
   @Input() project: Project;
   task_name: string;
   old_task_name: string;
+  deadline: Date;
   subscription: Subscription;
-  dt: Date;
 
   constructor(private _taskService: TaskService) {
-    console.log(moment())
   }
 
   ngOnInit() {
-    this.subscription = someTaskActive.subscribe(()=>{
+    this.subscription = taskActive.subscribe((task_id)=>{
       this.project.tasks.forEach(task=> {
-        if (task.active) task.active = false
+        if (task.active && task.id != task_id) task.active = false;
       });
     })
   }
@@ -35,7 +34,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   add() {
     if (this.task_name && this.task_name.trim() !== "") {
-      this._taskService.create(this.task_name, this.project.id).subscribe(
+      this._taskService.create(this.task_name, this.project).subscribe(
         resp => {
           this.project.tasks.push(new Task(resp));
           this.task_name = '';
@@ -85,23 +84,22 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   onNameClick(task: Task) {
     task.active = !task.active;
-    someTaskActive.emit(); // deactivate other active tasks
+    taskActive.emit(task.id); // deactivate active tasks exept task.id
   }
 
-  setDeadline(task: Task, date) {
-    this._taskService.delete(task).subscribe(
-      resp => {
-        task.deadline = resp.deadline;
-      },
+  setDeadline(task: Task, date: Date) {
+    this._taskService.deadline(task, date).subscribe(
+      resp => task.deadline = resp.deadline,
       error => {
         console.log(error);
       }
     )
   }
 
-  setDone(task: Task) {
-    this._taskService.done(task).subscribe(
-      _ => {},
+  setDone(task: Task, checked: boolean) {
+    console.log(checked);
+    this._taskService.done(task, checked).subscribe(
+      resp => task.done = resp.done,
       error => {
         console.log(error);
       }
