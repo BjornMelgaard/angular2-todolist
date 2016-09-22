@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { DatepickerModule, DropdownModule } from 'ng2-bootstrap/ng2-bootstrap';
-import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
+// import { FILE_UPLOAD_DIRECTIVES } from 'ng2-file-upload';
 
 import { ProjectService, TaskService, CommentService,
   AutofocusDirective, AutosizeDirective, ConfirmModule, BytesPipe } from './shared';
@@ -14,10 +14,9 @@ import { CommentListComponent } from './comment-list/comment-list.component';
   imports: [
     BrowserModule,
     FormsModule,
-    FileUploadModule,
     DatepickerModule,
     DropdownModule,
-    ConfirmModule,
+    ConfirmModule
    ],
   declarations: [
     ProjectsComponent,

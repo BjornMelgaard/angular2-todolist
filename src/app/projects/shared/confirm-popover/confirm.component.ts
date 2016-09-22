@@ -1,15 +1,34 @@
-import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, ElementRef} from '@angular/core';
+import {HostListener, OpaqueToken, Inject, AfterViewInit, Component, Input, Output, EventEmitter, OnInit, OnDestroy, ElementRef} from '@angular/core';
+
+export interface ConfirmConfig {
+  onConfirm: Function;
+  onCancel: Function;
+  onAfterViewInit: Function;
+  message: String;
+}
+
+export let CONFIRM_CONFIG = new OpaqueToken('confirm.config');
+
 
 @Component({
   templateUrl: './confirm.component.html',
+  styleUrls: ['./confirm.component.scss']
 })
-export class ConfirmComponent implements OnInit, OnDestroy{
-  constructor(private element: ElementRef, private onConfirm: Function, private message: String) {
-    console.log("created", message, element);
+export class ConfirmComponent implements OnDestroy, AfterViewInit {
+  config: ConfirmConfig;
+
+  constructor(private element: ElementRef, @Inject(CONFIRM_CONFIG) config:ConfirmConfig) {
+    this.config = config;
   }
 
-  ngOnInit() {
-    console.log("ngOnInit");
+  //#TODO
+  // @HostListener('blur', ['$event']) onBlur() {
+  //   console.log("blur");
+  //   this.config.onCancel();
+  // }
+
+  ngAfterViewInit() {
+    this.config.onAfterViewInit();
   }
 
   ngOnDestroy() {

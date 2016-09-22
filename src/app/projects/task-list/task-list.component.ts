@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, EventEmitter, Input } from '@angular/core';
 import { TaskService, Project, Task } from '../shared';
 import { Subscription } from 'rxjs/Subscription';
-import * as moment from 'moment';
 
 let taskActive = new EventEmitter<number>();
 
@@ -15,13 +14,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
   task_name: string;
   old_task_name: string;
   deadline: Date;
-  subscription: Subscription;
+
+  taskActive$: Subscription;
 
   constructor(private _taskService: TaskService) {
   }
 
   ngOnInit() {
-    this.subscription = taskActive.subscribe((task_id)=>{
+    this.taskActive$ = taskActive.subscribe((task_id)=>{
       this.project.tasks.forEach(task=> {
         if (task.active && task.id != task_id) task.active = false;
       });
@@ -29,7 +29,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.taskActive$.unsubscribe();
   }
 
   add() {

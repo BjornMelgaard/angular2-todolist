@@ -2,7 +2,7 @@
   <div class="comments-list" *ngIf="task.comments">
     <div class="comment" *ngFor="let comment of task.comments">
 
-      <a class="comment-delete" (click)="delete(comment)"><span class="glyphicon glyphicon-remove"></span></a>
+      <a class="comment-delete" confirmable (confirmed)="delete(comment)"><span class="glyphicon glyphicon-remove"></span></a>
       {{comment.text}}
       <ul class="attachments" *ngIf="comment.attachments">
         <li *ngFor="let attachment of comment.attachments">
@@ -19,7 +19,7 @@
     <textarea name="comment" rows="3" class="form-control" [(ngModel)]="comment_text" placeholder="Start typing here to write comment..."></textarea>
   </div>
 
-  <input type="file" ng2FileSelect [uploader]="uploader" multiple class="btn btn-primary btn-sm">Attach file</input>
+  <!-- <input type="file" ng2FileSelect [uploader]="uploader" multiple class="btn btn-primary btn-sm">Attach file</input> -->
   <button class="btn btn-success btn-sm pull-right" (click)="add()">Submit comment</button>
 
   <ul class="attachments">

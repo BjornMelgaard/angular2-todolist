@@ -12,7 +12,7 @@ export class CommentListComponent {
   @Input() task: Task;
   comment_text: string;
   attachments: Array<Attachment>;
-  uploader:FileUploader = new FileUploader({url: URL});
+  // uploader:FileUploader = new FileUploader({url: URL});
 
   constructor(private _commentService: CommentService) {
   }
