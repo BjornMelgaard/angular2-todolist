@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import { ProjectService, Project } from './shared';
+import { ProjectService, Project, HandleErrorService } from './shared';
 
 @Component({
   selector: 'app-projects',
@@ -11,7 +11,7 @@ export class ProjectsComponent implements OnInit {
   editing = false;
   old_project_name: string;
 
-  constructor(private _projectService: ProjectService) {}
+  constructor(private _projectService: ProjectService, private _error: HandleErrorService) {}
 
   ngOnInit() {
     this._projectService.fetchAll().subscribe(p => this.projects = p );
@@ -43,7 +43,7 @@ export class ProjectsComponent implements OnInit {
             project.editing = false;
             this.editing = false;
           },
-          error => console.log(error) //#
+          this._error.handle
         );
       } else {
         this._projectService.create(project).subscribe(
@@ -53,7 +53,7 @@ export class ProjectsComponent implements OnInit {
             project.editing = false;
             this.editing = false;
           },
-          error => console.log(error) //#
+          this._error.handle
         )
       }
     } else if (!project.id) {
@@ -71,10 +71,12 @@ export class ProjectsComponent implements OnInit {
   delete(project: Project) {
     if (project.id) {
       this._projectService.delete(project)
-        .subscribe(p => {
+        .subscribe(
+        p => {
           var index = this.projects.indexOf(project);
           this.projects.splice(index, 1);
-        });
+        },
+        this._error.handle);
     }
   }
 

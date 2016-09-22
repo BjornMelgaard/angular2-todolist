@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, EventEmitter, Input } from '@angular/core';
-import { TaskService, Project, Task } from '../shared';
+import { TaskService, Project, Task, HandleErrorService } from '../shared';
 import { Subscription } from 'rxjs/Subscription';
 
 let taskActive = new EventEmitter<number>();
@@ -17,7 +17,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   taskActive$: Subscription;
 
-  constructor(private _taskService: TaskService) {
+  constructor(private _taskService: TaskService, private _error: HandleErrorService) {
+  }
+
+  onDropSuccess(task, i) {
+    this._taskService.sort(task, i).subscribe(
+      resp => {},
+      this._error.handle
+    );
   }
 
   ngOnInit() {
@@ -39,9 +46,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
           this.project.tasks.push(new Task(resp));
           this.task_name = '';
         },
-        error => {
-          console.log(error);
-        }
+        this._error.handle
       )
     }
   }
@@ -63,9 +68,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
           task.name = resp.name;
           task.editing = false;
         },
-        error => {
-          console.log(error);
-        }
+        this._error.handle
       )
     }
   }
@@ -76,9 +79,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         var index = this.project.tasks.indexOf(task);
         this.project.tasks.splice(index, 1);
       },
-      error => {
-        console.log(error);
-      }
+      this._error.handle
     )
   }
 
@@ -90,19 +91,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
   setDeadline(task: Task, date: Date) {
     this._taskService.deadline(task, date).subscribe(
       resp => task.deadline = resp.deadline,
-      error => {
-        console.log(error);
-      }
+      this._error.handle
     )
   }
 
   setDone(task: Task, checked: boolean) {
-    console.log(checked);
     this._taskService.done(task, checked).subscribe(
       resp => task.done = resp.done,
-      error => {
-        console.log(error);
-      }
+      this._error.handle
     )
   }
 

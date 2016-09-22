@@ -7,6 +7,7 @@ import { AuthModalComponent } from './auth-modal.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ModalModule],
+  exports: [BrowserModule, FormsModule],
   declarations: [AuthModalComponent]
 })
 export class AuthModalModule { }

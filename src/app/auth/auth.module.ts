@@ -10,7 +10,7 @@ import { NotSingedInGuard, SingedInGuard } from './auth.guards';
 
 @NgModule({
   imports: [HttpModule],
-  providers: [ApiService, AuthService, NotSingedInGuard, SingedInGuard]
+  providers: [ApiService, AuthService, NotSingedInGuard, SingedInGuard],
 })
 export class AuthModule {
   constructor( @Optional() @SkipSelf() parentModule: AuthModule) {

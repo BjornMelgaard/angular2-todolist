@@ -13,14 +13,13 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ROUTES }  from './app.routing';
 import { ProjectsModule } from './projects';
 
+import { environment } from '../environments/environment';
+
 @NgModule({
   imports: [
-    BrowserModule,
-    FormsModule,
     HttpModule,
-
     AuthModule.forRoot({
-      apiUrl:      'http://localhost:3000/api',
+      apiUrl:      environment.server_root + '/api',
       signUpPath:  '/users/register',
       signInPath:  '/users/login',
       signOutPath: '/users/logout',

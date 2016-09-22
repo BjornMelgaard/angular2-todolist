@@ -36,6 +36,7 @@ export class Comment {
   attachments: Array<Attachment>;
 
   constructor(obj?: any) {
+    console.log(obj);
     Object.assign(this, obj);
   }
 }

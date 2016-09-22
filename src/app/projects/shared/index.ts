@@ -6,3 +6,4 @@ export * from './project.service';
 export * from './comment.service';
 export * from './confirm-popover';
 export * from './bytes.pipe';
+export * from './handle-error.service.ts';

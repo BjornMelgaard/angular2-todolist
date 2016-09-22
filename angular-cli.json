@@ -16,13 +16,11 @@
       "mobile": false,
       "styles": [
         "styles.scss",
-        "../node_modules/jquery-ui/themes/base/sortable.css",
         "../node_modules/bootstrap/dist/css/bootstrap.css"
       ],
       "scripts": [
         "vendor.ts",
         "../node_modules/jquery/dist/jquery.js",
-        "../node_modules/jquery-ui/ui/widgets/sortable.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js"
       ],
       "environments": {

@@ -11,10 +11,11 @@
 
 <div class="task-list" *ngIf="project.tasks">
   <table class="tasks">
-    <tbody>
+    <tbody dnd-sortable-container [sortableData]="project.tasks" [dropZones]="[project.id]">
       <tr class="task-item"
-        *ngFor="let task of project.tasks"
-        [class.active]="task.active">
+        *ngFor="let task of project.tasks; let i = index"
+        [class.active]="task.active"
+        dnd-sortable [sortableIndex]="i" (onDropSuccess)="onDropSuccess(task, i)">
         <td class="task-status">
           <input type="checkbox" name="status" [checked]="task.done" (change)="setDone(task, $event.target.checked)">
         </td>

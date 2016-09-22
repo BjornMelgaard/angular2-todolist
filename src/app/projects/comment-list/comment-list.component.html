@@ -7,7 +7,7 @@
       <ul class="attachments" *ngIf="comment.attachments">
         <li *ngFor="let attachment of comment.attachments">
           <span class="glyphicon glyphicon-file"></span>
-          <a href="{{attachment.file.url}}" target="_blank">{{attachment.file.name}}</a>
+          <a href="{{download_url + attachment.file.url}}" target="_blank">{{attachment.file.name}}</a>
           ({{attachment.file.size | bytes}})
         </li>
       </ul>
@@ -19,15 +19,24 @@
     <textarea name="comment" rows="3" class="form-control" [(ngModel)]="comment_text" placeholder="Start typing here to write comment..."></textarea>
   </div>
 
-  <!-- <input type="file" ng2FileSelect [uploader]="uploader" multiple class="btn btn-primary btn-sm">Attach file</input> -->
-  <button class="btn btn-success btn-sm pull-right" (click)="add()">Submit comment</button>
+  <button (click)="add_comment()" class="btn btn-success btn-sm pull-right">Submit comment</button>
+
+  <label class="btn btn-primary btn-sm upload-file">
+      Attach file
+     <input type="file" ng2FileSelect [uploader]="uploader" multiple (change)="upload()"/>
+  </label>
+
+  <div class="progress" *ngIf="uploader.isUploading" >
+    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+  </div>
 
   <ul class="attachments">
-    <li *ngFor="let attachment of attachments">
+    <li *ngFor="let item of uploader.queue">
       <span class="glyphicon glyphicon-file"></span>
-      <a href="{{attachment.file.url}}" target='_blank'>{{attachment.file.name}}</a>
-      ({{attachment.file.size | bytes}})
-      <a (click)="removeAttachment(attachment)">remove</a>
+      <a href="{{download_url + item.file.url}}" target='_blank'>{{item?.file?.name}}</a>
+      ({{item?.file?.size | bytes}})
+      <a (click)="item.remove()"><i class="glyphicon glyphicon-remove"></i></a>
+      <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
     </li>
   </ul>
 
